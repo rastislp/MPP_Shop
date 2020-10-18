@@ -1,24 +1,32 @@
+// MPP - Shop application in C-Language
+//Rastislav Petras G00252861
+
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
-struct Product {
+struct Product 
+{
 	char* name;
 	double price;
 };
 
-struct ProductStock {
+struct ProductStock 
+{
 	struct Product product;
 	int quantity;
 };
 
-struct Shop {
+struct Shop 
+{
 	double cash;
 	struct ProductStock stock[20];
 	int index;
 };
 
-struct Customer {
+struct Customer 
+{
 	char* name;
 	double budget;
 	struct ProductStock shoppingList[10];
@@ -26,10 +34,11 @@ struct Customer {
 };
 
 void printProduct(struct Product p)
+// Print all shop Inventory
 {
-	printf("PRODUCT NAME: %s \nPRODUCT PRICE: %.2f\n", p.name, p.price);
-	printf("-------------\n");
-}
+	printf("PRODUCT NAME: %s \nPRODUCT PRICE: €%.2f\n", p.name, p.price);
+	printf("-------------------------------\n");
+};
 
 void printCustomer(struct Customer c)
 {
@@ -80,7 +89,7 @@ struct Shop createAndStockShop()
 
 void printShop(struct Shop s)
 {
-	printf("Shop has %.2f in cash\n", s.cash);
+	printf("Shop has € %.2f in cash\n",  s.cash);
 	for (int i = 0; i < s.index; i++)
 	{
 		printProduct(s.stock[i].product);
@@ -88,26 +97,49 @@ void printShop(struct Shop s)
 	}
 }
 
-int main(void) 
+void menu(struct Shop s)
 {
-	// struct Customer dominic = { "Dominic", 100.0 };
-	//
-	// struct Product coke = { "Can Coke", 1.10 };
-	// struct Product bread = { "Bread", 0.7 };
-	// // printProduct(coke);
-	//
-	// struct ProductStock cokeStock = { coke, 20 };
-	// struct ProductStock breadStock = { bread, 2 };
-	//
-	// dominic.shoppingList[dominic.index++] = cokeStock;
-	// dominic.shoppingList[dominic.index++] = breadStock;
-	//
-	// printCustomer(dominic);
+	int choice = 0;
 	
+	
+	printf("------------------------------------------------------\n");
+	printf("|             Welcome in Shop application            |\n");
+    printf("------------------------------------------------------\n");
+	printf("\n");
+    printf("Choose one from below:\n");
+    printf("\n");
+    printf("1 Display shop inventory\n");
+    printf("\n");
+    printf("2 Display customer shopping list\n");
+    printf("\n");
+    printf("3 Go to checkout\n");
+    printf("\n");
+    printf("4 Exit \n");
+	scanf("%d", &choice);
+    if(choice == 1)
+	{
+		printShop(s);
+	}
+	else if(choice == 2)
+	{
+		exit(0);
+	}		
+	else if(choice == 3)
+	{
+		exit(0);
+	}		
+	else if(choice == 4)
+	{
+		exit(0);
+	}		
+	
+		
+}
+
+int main(void) 
+{   // Create a shop stock
 	struct Shop shop = createAndStockShop();
-	printShop(shop);
-	
-// printf("The shop has %d of the product %s\n", cokeStock.quantity, cokeStock.product.name);
+	// Display application menu
+	menu(shop);
 	
     return 0;
-}

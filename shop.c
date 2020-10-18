@@ -36,8 +36,7 @@ struct Customer
 void printProduct(struct Product p)
 // Print all shop Inventory
 {
-	printf("PRODUCT NAME: %s \nPRODUCT PRICE: €%.2f\n", p.name, p.price);
-	printf("-------------------------------\n");
+	printf("| %-20.20s   €%.2f |\n", p.name, p.price);
 };
 
 void printCustomer(struct Customer c)
@@ -89,11 +88,14 @@ struct Shop createAndStockShop()
 
 void printShop(struct Shop s)
 {
-	printf("Shop has € %.2f in cash\n",  s.cash);
+	printf("--------------------------------\n");
+	printf("|   Shop has € %.2f in cash  |\n",  s.cash);
+	printf("--------------------------------\n");
 	for (int i = 0; i < s.index; i++)
 	{
 		printProduct(s.stock[i].product);
-		printf("The shop has %d of the above\n", s.stock[i].quantity);
+		printf("| Stock quantity           %.3d | \n", s.stock[i].quantity);
+		printf("--------------------------------\n");
 	}
 }
 
@@ -143,3 +145,4 @@ int main(void)
 	menu(shop);
 	
     return 0;
+}

@@ -39,9 +39,8 @@ void printProduct(struct Product p)
 	printf("| %-20.20s   €%.2f |\n", p.name, p.price);
 };
 
-void printCustomer(struct Customer c)
+void displayCustomer(struct Customer c)
 {
-   double totalCost = 0.0;
    printf("--------------------------------\n");
    printf("| Name of customer: %s      |\n",  c.name);
    printf("| %s's budget: %.2f        |\n", c.name,  c.budget);
@@ -49,12 +48,30 @@ void printCustomer(struct Customer c)
    printf("| Product             |  Q-ty  |\n");
    for(int i =0; i<c.index; i++)
    {
-      double lineCost = c.shoppingList[i].quantity * c.shoppingList[i].product.price;
-      printf("| %-20.20s|   %.2d   |\n", c.shoppingList[i].product.name, c.shoppingList[i].quantity);
-      
+        printf("| %-20.20s|   %.2d   |\n", c.shoppingList[i].product.name, c.shoppingList[i].quantity);
    };
    printf("--------------------------------\n");
 };
+
+void printInvoice(struct Customer c)
+{
+   double SubTotal = 0.0;
+   printf("--------------------------------\n");
+   printf("| Name of customer: %s      |\n",  c.name);
+   printf("| %s's budget: %.2f        |\n", c.name,  c.budget);
+   printf("---------------------------------------------------\n");
+   printf("| Product             |  Q-ty  |  Price |  Total  |\n");
+   for(int i =0; i<c.index; i++){
+      double total = c.shoppingList[i].quantity * c.shoppingList[i].product.price;
+      printf("| %-20.20s|   %.2d   | %5.2f  | %5.2f   |\n", c.shoppingList[i].product.name, c.shoppingList[i].quantity,c.shoppingList[i].product.price,total);
+      SubTotal += total;
+   };
+   printf("|                                                 |\n");
+   printf("| Subtotal :                                %.2f |\n", SubTotal);
+   printf("---------------------------------------------------\n");
+};
+
+
 
 struct Shop createAndStockShop()
 {
@@ -139,6 +156,7 @@ void menu(struct Shop s)
 {
 	int choice = 0;
 	char customerFile;
+	char process;
 	
 	printf("\n\n");
 	printf("------------------------------------------------------\n");
@@ -164,12 +182,29 @@ void menu(struct Shop s)
 	}
 	else if(choice == 2)
 	{
-	  printf("\n\nFor displaying customer list please type customer file name in following format:	customer1.csv , customer2.csv ...\n");
-	  printf("File name >>> ");
-	  scanf("%s", &customerFile);
-      struct Customer newCustomer = selectCustomer(s, &customerFile);
-      printCustomer(newCustomer); 
-	  menu(s);	
+		printf("\n\nFor displaying customer list please type customer file name in following format:	customer1.csv , customer2.csv ...\n");
+		printf("File name >>> ");
+		scanf("%s", &customerFile);
+		struct Customer newCustomer = selectCustomer(s, &customerFile);
+		displayCustomer(newCustomer); 
+		printf("\nWhould you like to proceed to checkout? >>> ");
+		scanf("%s", &process);
+		if(process == 'y')
+		{
+			printf("Please confirm your selection by typing customer file once again:\n >>> ");
+			scanf("%s", &customerFile);
+			struct Customer newCustomer = selectCustomer(s, &customerFile);
+			printInvoice(newCustomer);
+			menu(s);
+		}
+		if(process == 'n')
+		{	  
+		    menu(s);
+		}
+		else
+	    {
+			exit(0); 
+		}	
 	}		
 	else if(choice == 3)
 	{
